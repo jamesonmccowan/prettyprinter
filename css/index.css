@@ -1,0 +1,59 @@
+body {
+    font-family: arial;
+}
+
+h2 {
+    text-align: center;
+}
+
+.container {
+    margin: 1cm;
+    padding: 5px;
+    border: 1px outset gray;
+}
+
+.input {
+    border: 1px inset gray;
+    margin: auto;
+    padding: 5px;
+    background: transparent;
+}
+
+#input {
+    border: 0px inset transparent;
+    margin: 0px;
+    padding: 0;
+    width: 100%
+}
+
+#output {
+    border: 1px inset gray;
+    margin: 0px;
+    padding: 5px;
+}
+
+.error {
+    background: red;
+    color: black;
+}
+
+.string {
+    color: blue;
+}
+
+.key {
+    color: green;
+}
+
+.bool {
+    color: purple;
+}
+
+.number {
+    color: red;
+}
+
+.null {
+    color: gold;
+}
+

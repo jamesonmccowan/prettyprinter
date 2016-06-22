@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Abastract Syntax Tree Displayer</title>
+
+        <style type="text/css">
+.node {
+    text-align: center;
+}
+.attrs {
+    margin: auto;
+    border: 1px solid black;
+	border-radius: 5px;
+}
+.attrs th, .attrs td {
+    border: 1px solid black;
+}
+.circle {
+    margin: auto;
+    margin-bottom: -5px;
+    border: 1px solid black;
+	border-radius: 5px;
+    display: inline-block;
+    padding: 3px;
+    background: #cef;
+}
+.connect td {
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 0px solid black;
+}
+.connect .corner {
+    width: 1cm;
+  	border-top: 0px solid transparent;
+  	border-right: 0px solid transparent;
+  	border-left: 0px solid transparent;
+}
+.spacer {
+    margin: auto;
+    width: 0px;
+    height: 10px;
+    border-left: 1px solid black;
+}
+table {
+    margin: auto;
+    border-collapse: collapse;
+}
+th, td {
+    vertical-align: top;
+    background: white;
+}
+th {
+    text-align: right;
+}
+td {
+    text-align: left;
+}
+textarea {
+    width: 99%;
+    height: 2in;
+}
+        </style>
+
+        <script type="text/javascript" src="js/parser.js"></script>
+        <script type="text/javascript" src="js/json_definition.js"></script>
+        <script type="text/javascript">
+function node_to_html (node) {
+    var attrs = [];
+    var nodes = [];
+    var div = document.createElement("div");
+    div.className = "node";
+    GP.each(node, function (value, key) {
+        if (key == "nodes") {
+            for (var i=0;i<value.length;i++) {
+                nodes.push(node_to_html(value[i]));
+            }
+        } else {
+            var tr = document.createElement("tr");
+            tr.className = "attr";
+            var th = document.createElement("th");
+            th.innerHTML = key;
+            var td = document.createElement("td");
+            td.innerHTML = value;
+            tr.appendChild(th);
+            tr.appendChild(td);
+            attrs.push(tr);
+        }
+    });
+
+    var circle = document.createElement("div");
+    circle.className = "circle";
+    var table = document.createElement("table");
+    table.className = "attrs";
+    for (var i=0;i<attrs.length;i++) {
+        table.appendChild(attrs[i]);
+    }
+    circle.appendChild(table);
+    div.appendChild(circle);
+
+    if (nodes.length > 0) {
+        var spacer = document.createElement("div");
+        spacer.className = "spacer";
+        div.appendChild(spacer);
+    }
+
+    table = document.createElement("table");
+    table.className = "nodes";
+    var tr = document.createElement("tr");
+    var header = document.createElement("tr");
+    header.className = "connect";
+    var corner = document.createElement("td");
+    corner.className = "corner";
+    header.appendChild(corner);
+    for (var i=0;i<nodes.length;i++) {
+        var td = document.createElement("td");
+        td.colSpan = 2;
+        td.style.paddingTop = "0px";
+        td.appendChild(nodes[i]);
+        tr.appendChild(td);
+
+        td = document.createElement("td");
+        if (i<nodes.length-1) {
+            td.colSpan = 2;
+            td.innerHTML = "<br />";
+        } else {
+            td.className = "corner";
+        }
+        header.appendChild(td);
+    }
+
+    table.appendChild(header);
+    table.appendChild(tr);
+    div.appendChild(table);
+    return div;
+}
+
+window.addEventListener("load", function () {
+    document.getElementById("ast").appendChild(
+        node_to_html({
+            "type": "test",
+            "id": "test",
+            "nodes": [
+                {"type": "child"},
+                {"type": "symbol", "value": 4},
+                {"type": "error", "nodes": []}
+            ]
+        })
+    );
+    document.getElementById("display").addEventListener("click", function () {
+        var json = document.getElementById("json_ast").value;
+        try {
+            json = JSON.parse(json);
+            var html = node_to_html(json);
+            var ast = document.getElementById("ast");
+            ast.innerHTML = "";
+            ast.appendChild(html);
+        } catch (e) {
+            alert("Error occured while trying to parse JSON into HTML:\n" + JSON.stringify(e));
+        }
+    }, false);
+    document.getElementById("clear").addEventListener("click", function () {
+        document.getElementById("json_ast").value = "";
+        document.getElementById("ast").innerHTML = "";
+    }, false);
+}, false);
+        </script>
+    </head>
+    <body>
+        <div id="ast"></div>
+        <hr />
+        <div id="json">
+            <b>JSON</b><br />
+            <textarea id="json_ast"></textarea><br />
+            <button id="display">Display</button>
+            <button id="clear">Clear</button>
+        </div>
+    </body>
+</html>

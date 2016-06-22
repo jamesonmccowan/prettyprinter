@@ -1,0 +1,194 @@
+x recycling
+- backups
+x pto
+- read a chapter
+- 
+
+{"number":-12345.06789,"string":"\"''confuse the parser\\\"","booleans":[true,false],"empty":null}
+
+[
+ 0    {"id":"left brace",    "length":  1, "text":"{"},
+ 1    {"id":"string",        "length":  8, "text":"\"number\""},
+ 2    {"id":"colon",         "length":  1, "text":":"},
+ 3    {"id":"number",        "length": 12, "text":"-12345.06789"},
+ 4    {"id":"camma",         "length":  1, "text":","},
+ 5    {"id":"string",        "length":  8, "text":"\"string\""},
+ 6    {"id":"colon",         "length":  1, "text":":"},
+ 7    {"id":"string",        "length": 28, "text":"\"\\\"''confuse the parser\\\\\\\"\""},
+ 8    {"id":"camma",         "length":  1, "text":","},
+ 9    {"id":"string",        "length": 10, "text":"\"booleans\""},
+10    {"id":"colon",         "length":  1, "text":":"},
+11    {"id":"left bracket",  "length":  1, "text":"["},
+12    {"id":"bool",          "length":  4, "text":"true"},
+13    {"id":"camma",         "length":  1, "text":","},
+14    {"id":"bool",          "length":  5, "text":"false"},
+15    {"id":"right bracket", "length":  1, "text":"]"},
+16    {"id":"camma",         "length":  1, "text":","},
+17    {"id":"string",        "length":  7, "text":"\"empty\""},
+18    {"id":"colon",         "length":  1, "text":":"},
+19    {"id":"null",          "length":  4, "text":"null"},
+20    {"id":"right brace",   "length":  1, "text":"}"}
+]
+
+{"type":"program","index":0,"size":0,"nodes":[
+    {"type":"ast","id":"program","index":0,"size":21,"nodes":[
+        {"type":"phrases","index":0,"size":21,"nodes":[
+            {"type":"ast","id":"statement","index":0,"size":21,"nodes":[
+                {"type":"xor","index":0,"size":21,"nodes":[
+                    {"type":"phrases","index":0,"size":21,"nodes":[
+                        {"type":"ast","id":"object","index":0,"size":21,"nodes":[
+                            {"type":"symbols","index":0,"size":1,"nodes":[
+                                {"id":"left brace","length":1,"text":"{"}
+                            ]},
+                            {"type":"zero_or_more","index":1,"size":19,"nodes":[
+                                {"type":"phrases","index":1,"size":3,"nodes":[
+                                    {"type":"ast","id":"object_key_value_pair","index":1,"size":3,"nodes":[
+                                        {"type":"optional","index":1,"size":0,"nodes":[]},
+                                        {"type":"symbols","index":1,"size":1,"nodes":[
+                                            {"id":"string","length":8,"text":"\"number\""}
+                                        ]},
+                                        {"type":"optional","index":2,"size":0,"nodes":[]},
+                                        {"type":"symbols","index":2,"size":1,"nodes":[
+                                            {"id":"colon","length":1,"text":":"}
+                                        ]},
+                                        {"type":"optional","index":3,"size":0,"nodes":[]},
+                                        {"type":"phrases","index":3,"size":1,"nodes":[
+                                            {"type":"ast","id":"statement","index":3,"size":1,"nodes":[
+                                                {"type":"xor","index":3,"size":1,"nodes":[
+                                                    {"type":"phrases","index":3,"size":1,"nodes":[
+                                                        {"type":"ast","id":"number","index":3,"size":1,"nodes":[
+                                                            {"type":"symbols","index":3,"size":1,"nodes":[
+                                                                {"id":"number","length":12,"text":"-12345.06789"]}
+                                                            ]}
+                                                        ]}
+                                                    ]}
+                                                ]}
+                                            ]}
+                                        ]}
+                                    ]}
+                                ]},
+                                {"type":"symbols","index":4,"size":1,"nodes":[
+                                    {"id":"camma","length":1,"text":","]},
+                                ]},
+                                {"type":"phrases","index":5,"size":3,"nodes":[
+                                    {"type":"ast","id":"object_key_value_pair","index":5,"size":3,"nodes":[
+                                        {"type":"optional","index":5,"size":0,"nodes":[]},
+                                        {"type":"symbols","index":5,"size":1,"nodes":[
+                                            {"id":"string","length":8,"text":"\"string\""}
+                                        ]},
+                                        {"type":"optional","index":6,"size":0,"nodes":[]},
+                                        {"type":"symbols","index":6,"size":1,"nodes":[
+                                            {"id":"colon","length":1,"text":":"}
+                                        ]},
+                                        {"type":"optional","index":7,"size":0,"nodes":[]},
+                                        {"type":"phrases","index":7,"size":1,"nodes":[
+                                            {"type":"ast","id":"statement","index":7,"size":1,"nodes":[
+                                                {"type":"xor","index":7,"size":1,"nodes":[
+                                                    {"type":"phrases","index":7,"size":1,"nodes":[
+                                                        {"type":"ast","id":"string","index":7,"size":1,"nodes":[
+                                                            {"type":"symbols","index":7,"size":1,"nodes":[
+                                                                {"id":"string","length":28,"text":"\"\\\"''confuse the parser\\\\\\\"\""}
+                                                            ]}
+                                                        ]}
+                                                    ]}
+                                                ]}
+                                            ]}
+                                        ]}
+                                    ]}
+                                ]},
+                                {"type":"symbols","index":8,"size":1,"nodes":[
+                                    {"id":"camma","length":1,"text":","}
+                                ]},
+                                {"type":"phrases","index":9,"size":7,"nodes":[
+                                    {"type":"ast","id":"object_key_value_pair","index":9,"size":7,"nodes":[
+                                        {"type":"optional","index":9,"size":0,"nodes":[]},
+                                            {"type":"symbols","index":9,"size":1,"nodes":[
+                                                {"id":"string","length":10,"text":"\"booleans\""}
+                                            ]},
+                                            {"type":"optional","index":10,"size":0,"nodes":[]},
+                                            {"type":"symbols","index":10,"size":1,"nodes":[
+                                                {"id":"colon","length":1,"text":":"}
+                                            ]},
+                                            {"type":"optional","index":11,"size":0,"nodes":[]},
+                                            {"type":"phrases","index":11,"size":5,"nodes":[
+    {"type":"ast","id":"statement","index":11,"size":5,"nodes":[
+    {"type":"xor","index":11,"size":5,"nodes":[
+    {"type":"phrases","index":11,"size":5,"nodes":[
+    {"type":"ast","id":"array","index":11,"size":5,"nodes":[
+    {"type":"symbols","index":11,"size":1,"nodes":[
+    {"id":"left bracket","length":1,"text":"["]
+    }},{"type":"zero_or_more","index":12,"size":3,"nodes":[
+    {"type":"and","index":12,"size":1,"nodes":[
+    {"type":"optional","index":12,"size":0,"nodes":[]},{"type":"phrases","index":12,"size":1,"nodes":[
+    {"type":"ast","id":"statement","index":12,"size":1,"nodes":[
+    {"type":"xor","index":12,"size":1,"nodes":[
+    {"type":"phrases","index":12,"size":1,"nodes":[
+    {"type":"ast","id":"bool","index":12,"size":1,"nodes":[
+    {"type":"symbols","index":12,"size":1,"nodes":[
+    {"id":"bool","length":4,"text":"true"]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }},{"type":"optional","index":13,"size":0,"nodes":[]]
+    }},{"type":"symbols","index":13,"size":1,"nodes":[
+    {"id":"camma","length":1,"text":","]
+    }},{"type":"and","index":14,"size":1,"nodes":[
+    {"type":"optional","index":14,"size":0,"nodes":[]},{"type":"phrases","index":14,"size":1,"nodes":[
+    {"type":"ast","id":"statement","index":14,"size":1,"nodes":[
+    {"type":"xor","index":14,"size":1,"nodes":[
+    {"type":"phrases","index":14,"size":1,"nodes":[
+    {"type":"ast","id":"bool","index":14,"size":1,"nodes":[
+    {"type":"symbols","index":14,"size":1,"nodes":[
+    {"id":"bool","length":5,"text":"false"]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }},{"type":"optional","index":15,"size":0,"nodes":[]]
+    }]
+    }},{"type":"symbols","index":15,"size":1,"nodes":[
+    {"id":"right bracket","length":1,"text":"]"]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }},{"type":"symbols","index":16,"size":1,"nodes":[
+    {"id":"camma","length":1,"text":","]
+    }},{"type":"phrases","index":17,"size":3,"nodes":[
+    {"type":"ast","id":"object_key_value_pair","index":17,"size":3,"nodes":[
+    {"type":"optional","index":17,"size":0,"nodes":[]},{"type":"symbols","index":17,"size":1,"nodes":[
+    {"id":"string","length":7,"text":"\"empty\""]
+    }},{"type":"optional","index":18,"size":0,"nodes":[]},{"type":"symbols","index":18,"size":1,"nodes":[
+    {"id":"colon","length":1,"text":":"]
+    }},{"type":"optional","index":19,"size":0,"nodes":[]},{"type":"phrases","index":19,"size":1,"nodes":[
+    {"type":"ast","id":"statement","index":19,"size":1,"nodes":[
+    {"type":"xor","index":19,"size":1,"nodes":[
+    {"type":"phrases","index":19,"size":1,"nodes":[
+    {"type":"ast","id":"null","index":19,"size":1,"nodes":[
+    {"type":"symbols","index":19,"size":1,"nodes":[
+    {"id":"null","length":4,"text":"null"]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }},{"type":"symbols","index":20,"size":1,"nodes":[
+    {"id":"right brace","length":1,"text":"}"]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }]
+    }]
+}}
+

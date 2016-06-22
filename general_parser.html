@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>General Parser</title>
+        <style type="text/css">
+body {
+    font-family: arial;
+}
+
+h2 {
+    text-align: center;
+}
+
+.container {
+    margin: 0px 1cm 1cm 1cm;
+    padding: 5px;
+    border: 1px outset gray;
+}
+
+.input, .output, .name, .symbols, .phrases {
+    border: 1px inset gray;
+    margin: auto;
+    padding: 5px;
+    background: transparent;
+}
+
+textarea {
+    border: 0px inset transparent;
+    margin: 0px;
+    padding: 0;
+    width: 100%
+}
+
+/*#output {
+    border: 1px inset gray;
+    margin: 0px;
+    padding: 5px;
+}*/
+
+.name {
+    text-align: center;
+}
+#name {
+    width: 50%;
+}
+
+#new_buttons {
+    display: inline;
+}
+
+.error {
+    background: red;
+    color: black;
+}
+
+.string {
+    color: blue;
+}
+
+.key {
+    color: green;
+}
+
+.bool {
+    color: purple;
+}
+
+.number {
+    color: red;
+}
+
+.null {
+    color: gold;
+}
+
+        </style>
+        <script type="text/javascript" src="js/parser.js"></script>
+        <script type="text/javascript" src="js/json_definition.js"></script>
+        <script type="text/javascript">
+var selected_parser;
+function set_parser (new_parser) {
+    selected_parser = new_parser;
+    document.getElementById("symbols").value = JSON.stringify(new_parser.symbol_list);
+    document.getElementById("phrases").value = JSON.stringify(new_parser.phrase_table);
+}
+window.addEventListener("load", function () {
+    console.log(GP);
+
+    set_parser(json_parser);
+    document.getElementById("lex").addEventListener("click", function () {
+        var str = document.getElementById("input").value;
+        try {
+            var lexed = selected_parser.lex(str);
+            document.getElementById("output").value = JSON.stringify(lexed);
+        } catch (e) {
+            console.log("error", e);
+            alert("Error while trying to lex input\n" + JSON.stringify(e));
+        }
+    }, false);
+    document.getElementById("parse").addEventListener("click", function () {
+        var str = document.getElementById("input").value;
+        try {
+            var parsed = selected_parser.parse(str);
+            document.getElementById("output").value = JSON.stringify(parsed);
+        } catch (e) {
+            console.log("error", e);
+            alert("Error while trying to parse input\n" + JSON.stringify(e));
+        }
+    }, false);
+    document.getElementById("new").addEventListener("click", function () {
+        try {
+            var name = document.getElementById("name").value;
+            var symbols = JSON.parse(document.getElementById("symbols").value);
+            var phrases = JSON.parse(document.getElementById("phrases").value);
+            var new_parser = GP.create(symbols, phrases);
+            new_parser.name = name;
+
+            var box = document.createElement("div");
+            var input = document.createElement("input");
+            input.type = "radio";
+            input.name = "parser";
+            input.value = name;
+            input.addEventListener("click", function () {
+                set_parser(new_parser);
+            }, false);
+            var text = document.createElement("span");
+            text.innerHTML = " " + name + " ";
+            var button = document.createElement("button");
+            button.innerHTML = "X";
+            button.addEventListener("click", function () {
+                this.parentNode.parentNode.removeChild(this.parentNode);
+            }, false);
+            box.appendChild(input);
+            box.appendChild(text);
+            box.appendChild(button);
+            document.getElementById("radio").appendChild(box);
+        } catch (e) {
+            console.log("error", e);
+            alert("Error while trying to create parser\n" + JSON.stringify(e));
+        }
+    }, false);
+}, false);
+        </script>
+    </head>
+    <body>
+        <h2>General Parser</h2>
+
+        <div><b>Input</b><br />
+            <div class="container">
+                <div class="input">
+                    <textarea id="input">[{test:"test"}]</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div><b>Output</b><br />
+            <div class="container">
+                <!--<pre id="output"></pre>-->
+                <div class="output">
+                    <textarea id="output"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button id="lex">Lex</button>
+            <button id="parse">Parse</button>
+        </div>
+
+        <hr />
+
+        <div>
+            <div class="container">
+                <div class="name">
+                    <b>Name</b>
+                    <input id="name" />
+                </div>
+            </div>
+        </div>
+
+        <div><b>Symbols</b><br />
+            <div class="container">
+                <div class="symbols">
+                    <textarea id="symbols"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div><b>Phrases</b><br />
+            <div class="container">
+                <div class="phrases">
+                    <textarea id="phrases"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button id="new">New</button>
+            <div id="radio">
+                <input type="radio" name="parser" value="JSON" checked onclick="set_parser(json_parser);"> JSON<br>
+            </div>
+        </div>
+
+    </body>
+</html>
