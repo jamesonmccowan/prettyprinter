@@ -34,7 +34,7 @@ describe("The \"Symbol\" function", function() {
     it("Created symbols can detect matching strings", function() {
         var id = random_string();
         var s = new GP.Symbol(id, "^" + id + "$");
-        
+
         expect(s.match(id)).toEqual({"id": id, "length": id.length, "text": id});
         expect(s.match(" " + id + " ")).toBe(false);
     });

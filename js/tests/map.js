@@ -16,7 +16,7 @@ describe("The \"map\" function", function() {
         expect(b.length == c.length).toBe(true);
         expect(c.length == a.length).toBe(true);
         expect(a).toEqual(c);
-        
+
         for (var i=0;i<size;i++) {
             expect(b[i]).toBe(i);
         }

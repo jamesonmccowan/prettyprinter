@@ -2,10 +2,10 @@ var json_parser = (function () {
     var json_symbols = [
         {"id": "string", "exp": /^'(([^'\\])|(\\.))*'/},
         {"id": "string", "exp": /^"(([^"\\])|(\\.))*"/},
-        {"id": "left brace", "exp": /^\{/},
-        {"id": "right brace", "exp": /^\}/},
-        {"id": "left bracket", "exp": /^\[/},
-        {"id": "right bracket", "exp": /^]/},
+        {"id": "left-brace", "exp": /^\{/},
+        {"id": "right-brace", "exp": /^\}/},
+        {"id": "left-bracket", "exp": /^\[/},
+        {"id": "right-bracket", "exp": /^]/},
         {"id": "number", "exp": /^(-?)(\d+)((\.\d+)?)/},
         {"id": "bool", "exp": /^true/},
         {"id": "bool", "exp": /^false/},
@@ -43,12 +43,13 @@ var json_parser = (function () {
         {
             "id": "object",
             "parse": [
-                [ "get_symbols", "left brace" ],
+                [ "get_symbols", "left-brace" ],
+                [ "optional", [ "get_symbols", "whitespace"] ],
                 [ "zero_or_more",
                     [ "get_phrases", "object_key_value_pair" ],
                     [ "get_symbols", "camma" ],
                 ],
-                [ "get_symbols", "right brace" ],
+                [ "get_symbols", "right-brace" ],
             ]
         },
         {
@@ -72,7 +73,8 @@ var json_parser = (function () {
         {
             "id": "array",
             "parse": [
-                [ "get_symbols", "left bracket" ],
+                [ "get_symbols", "left-bracket" ],
+                [ "optional", [ "get_symbols", "whitespace"] ],
                 [ "zero_or_more",
                     [ "and",
                         [ "optional", [ "get_symbols", "whitespace"] ],
@@ -81,7 +83,7 @@ var json_parser = (function () {
                     ],
                     [ "get_symbols", "camma" ],
                 ],
-                [ "get_symbols", "right bracket" ],
+                [ "get_symbols", "right-bracket" ],
             ]
         },
         {
@@ -97,7 +99,16 @@ var json_parser = (function () {
             ]
         }
     ];
-    var gp = new GP.create(json_symbols, json_phrases);
+    var pretty_print = [
+        {"id":"#object_key_value_pair", "newline": true, "indent": "    ",},
+        {"id":".whitespace", "ignore": true,},
+        {"id":".right-brace", "newline":true,},
+        {"id":".colon", "pad-right":" ", "pad-left":" ",},
+        {"id":".left-bracket", "pad-right":" ",},
+        {"id":".right-bracket", "pad-left":" ",},
+        {"id":"#array .camma", "pad-right":" ",},
+    ];
+    var gp = new GP.create(json_symbols, json_phrases, pretty_print);
     gp.name = "JSON";
     return gp;
 })()

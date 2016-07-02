@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Print Styling Test</title>
+        <style type="text/css">
+.border {
+    margin: auto;
+    padding: 3px;
+    border: 1px solid #666;
+    background: #eee;
+}
+.border pre {
+    margin: auto;
+    padding: 3px;
+    border: 1px solid #666;
+    background: #fff;
+    color: black;
+}
+
+.symbol-string {
+    color: #06f;
+}
+
+.symbol-number {
+    color: #0a0;
+}
+
+.symbol-bool {
+    color: #a0a;
+}
+
+.symbol-null {
+    color: #f00;
+}
+
+.phrase-object_key_value_pair:before {
+    content: "\A    ";
+}
+.symbol-right-brace:before {
+    content: "\A";
+}
+        </style>
+    </head>
+    <body>
+        <div class="border"><pre><span class="node-program phrase-program"><span class="node-phrases phrase-statement"><span class="node-phrases phrase-object"><span class="node-symbols"><span class="symbol-left-brace">{</span></span><span class="node-phrases phrase-object_key_value_pair"><span class="node-symbols"><span class="symbol-string">"number"</span></span><span class="node-symbols"><span class="symbol-colon">:</span></span><span class="node-phrases phrase-statement"><span class="node-phrases phrase-number"><span class="node-symbols"><span class="symbol-number">-12345.06789</span></span></span></span></span><span class="node-symbols"><span class="symbol-camma">,</span></span><span class="node-phrases phrase-object_key_value_pair"><span class="node-symbols"><span class="symbol-string">"string"</span></span><span class="node-symbols"><span class="symbol-colon">:</span></span><span class="node-phrases phrase-statement"><span class="node-phrases phrase-string"><span class="node-symbols"><span class="symbol-string">"\\"\'\\\'confuse the parser\\\\\\""</span></span></span></span></span><span class="node-symbols"><span class="symbol-camma">,</span></span><span class="node-phrases phrase-object_key_value_pair"><span class="node-symbols"><span class="symbol-string">"booleans"</span></span><span class="node-symbols"><span class="symbol-colon">:</span></span><span class="node-phrases phrase-statement"><span class="node-phrases phrase-array"><span class="node-symbols"><span class="symbol-left-bracket">[</span></span><span class="node-phrases phrase-statement"><span class="node-phrases phrase-bool"><span class="node-symbols"><span class="symbol-bool">true</span></span></span></span><span class="node-symbols"><span class="symbol-camma">,</span></span><span class="node-phrases phrase-statement"><span class="node-phrases phrase-bool"><span class="node-symbols"><span class="symbol-bool">false</span></span></span></span><span class="node-symbols"><span class="symbol-right-bracket">]</span></span></span></span></span><span class="node-symbols"><span class="symbol-camma">,</span></span><span class="node-phrases phrase-object_key_value_pair"><span class="node-symbols"><span class="symbol-string">"empty"</span></span><span class="node-symbols"><span class="symbol-colon">:</span></span><span class="node-phrases phrase-statement"><span class="node-phrases phrase-null"><span class="node-symbols"><span class="symbol-null">null</span></span></span></span></span><span class="node-symbols"><span class="symbol-right-brace">}</span></span></span></span></span></pre></div>
+
+        <p>It was a clever idea, but css on its own is not powerful enough. we can't replicate multi-level indents with it.</p>
+    </body>
+</html>

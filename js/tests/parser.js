@@ -475,7 +475,7 @@ describe("A Parser object", function() {
                 {"type": "ast", "id": "program", "index": 0, "size": 1, "nodes": [
                     {"type": "optional", "index": 0, "size": 1, "nodes": [
                         {"type": "symbols", "index": 0, "size": 1, "nodes": [
-                            {"id": "string", "length": 10, "text": "\"A string\""}  
+                            {"id": "string", "length": 10, "text": "\"A string\""}
                         ]}
                     ]},
                     {"type": "optional", "index": 1, "size": 0, "nodes": []}

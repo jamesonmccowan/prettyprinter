@@ -78,7 +78,7 @@ window.GP = (function () {
         } else {
             this.error("Symbol needs to have an \"id\" of type string!");
         }
-    
+
         self.exp = [];
         if (!exp) {
             self.error("Symbol needs to have an \"exp\" of type regexp, or [regexp], or string!");
@@ -110,7 +110,7 @@ window.GP = (function () {
         error(this, str, stats);
     };
     gp.Symbol = Symbol;
-    
+
     // Phrase: groups of symbols that can be nested within eachother
     function Phrase(id, parse) {
         var self = this;
@@ -197,13 +197,13 @@ window.GP = (function () {
                     this.error(
                         "Parse Error: expected symbol \"" + action[i] + "\", and got \"" + symbols[index].id + "\" instead",
                         {"action": action, "symbol": symbols[index], "index": index}
-                    ); 
+                    );
                 }
             } else {
                 this.error(
                     "Parse Error: bad symbol request",
                     {"action": action, "symbol": symbols[index], "index": index}
-                ); 
+                );
             }
         }
         return node;
@@ -221,13 +221,13 @@ window.GP = (function () {
                     this.error(
                         "Parse Error: expected phrase \"" + action[i] + "\"",
                         {"action": action, "symbol": symbols[index], "index": index}
-                    ); 
+                    );
                 }
             } else {
                 this.error(
                     "Parse Error: bad phrase request",
                     {"action": action, "symbol": symbols[index], "index": index}
-                ); 
+                );
             }
         }
         return node;
@@ -252,7 +252,7 @@ window.GP = (function () {
                 this.error(
                     "Parse Error: \"And\" expected array with 2 or more elements",
                     {"action": action, "symbol": symbols[index], "index": index}
-                ); 
+                );
              }
         }
         if (actions.length) {
@@ -283,14 +283,14 @@ window.GP = (function () {
                 this.error(
                     "Parse Error: \"Or\" expected array with 2 or more elements",
                     {"action": action, "symbol": symbols[index], "index": index}
-                ); 
+                );
              }
         }
         if (actions.length == action.length-1) {
             this.error(
                 "Parse Error: \"Or\" didn't find a match for any element",
                 {"action": action, "symbol": symbols[index], "index": index}
-            ); 
+            );
         }
         return node;
     };
@@ -378,7 +378,7 @@ window.GP = (function () {
                         // we've consumed one too many phrases, and the last one was optional or lacked any symbol
                         node.pop();
                     }
-                } 
+                }
             }
         } else {
             this.error(
@@ -451,7 +451,7 @@ window.GP = (function () {
     };
 
 
-    function create(symbol_list, phrase_list) {
+    function create(symbol_list, phrase_list, print_rules) {
         var parser = {
             "name": name,
             "symbol_table": {},
@@ -490,9 +490,78 @@ window.GP = (function () {
             "remove_phrase": function (id) {
                 delete this.phrase_table[id];
             },
+            "pretty_print_list": [],
+            "pretty_print_table": {},
+            "add_pretty_print_rule": function (rule) {
+                if (typeof rule == "object") {
+                    if (typeof rule.id == "string") {
+                        this.pretty_print_table[rule.id] = rule;
+                        this.pretty_print_list.push(rule);
+                    } else {
+                        error(null, "Pretty Print Error: Cannot add pretty print rule without a valid id", {"rule": rule});
+                    }
+                } else {
+                    error(null, "Pretty Print Error: Cannot add type \"" + (typeof rule) + "\" as pretty print rule", {"rule": rule});
+                }
+            },
+            "remove_pretty_print_rule": function (id) {
+                var index = this.pretty_print_list.indexOf(this.pretty_print_table[id]);
+                if (index != -1) {
+                    this.pretty_print_list.splice(index, 1);
+                    delete this.pretty_print_table[id];
+                }
+            },
+            "get_pretty_print_rules": function (selector) {
+                var options = ["ignore", "indent", "newline", "pad-left", "pad-right"];
+                var rules = {
+                    "prettify": function(str, indent, html, type, phrase, symbol) {
+                        if (this.ignore) {
+                            return "";
+                        }
+                        if (this["pad-left"]) {
+                            str = this["pad-left"] + str;
+                        }
+                        if (this["pad-right"]) {
+                            str += this["pad-right"];
+                        }
+                        if (this.newline) {
+                            str = "\n" + indent + str;
+                        }
+                        if (html) {
+                            var classes = [];
+                            if (typeof type == "string") {
+                                classes.push("node-" + type);
+                            }
+                            if (typeof phrase == "string") {
+                                classes.push("phrase-" + phrase);
+                            }
+                            if (typeof symbol == "string") {
+                                classes.push("symbol-" + symbol);
+                            }
+                            str = '<span class="' + classes.join(" ") + '">' + str + '</span>';
+                        }
+                        return str;
+                    }
+                };
+                if (typeof selector == "string") {
+                    for(var i=0;i<this.pretty_print_list.length;i++) {
+                        var rule = this.pretty_print_list[i];
+                        var reg = new RegExp(rule.id + "$");
+                        if (reg.test(selector)) { // if this rule matches the last part of the call stack
+                            for (var j=0;j<options.length;j++) {
+                                if (typeof rule[options[j]] != "undefined") {
+                                    rules[options[j]] = rule[options[j]];
+                                }
+                            }
+                        }
+                    }
+                }
+                return rules;
+            },
             "lex": lex,
             "parse": parse,
             "print_ast": print_ast,
+            "pretty_print": pretty_print,
         };
 
         // check symbol_table
@@ -511,6 +580,13 @@ window.GP = (function () {
             });
         } else {
             error(null, "Parser node definitions needs to be an array!", {"phrase_list": phrase_list});
+        }
+
+        // check and process print_rules
+        if (print_rules) {
+            map(print_rules, function (p) {
+                parser.add_pretty_print_rule(p);
+            });
         }
 
         return parser;
@@ -564,7 +640,8 @@ window.GP = (function () {
                 var p = program.ast(symbols, 0, this.phrase_table, ast);
                 ast.size += p.size;
             } catch (e) {
-                console.log("AST Error:", JSON.stringify(ast));
+                console.log(e);
+                console.log("ast", ast, {"stringified": JSON.stringify(ast)});
                 throw e;
             }
         }
@@ -636,6 +713,39 @@ window.GP = (function () {
                 return ast.nodes;
         }
         error(ast, "Compressor Error: encountered unknown AST type!");
+    }
+
+    // ignore, indent, newline, pad-left, pad-right
+    function pretty_print(str, html, indent, cs) {
+        indent = indent||"";
+        var ast;
+        var rules;
+        if (typeof str === "string") {
+            ast = this.parse(str);
+        } else if (typeof str === "object") {
+            ast = str;
+        } else {
+            error(null, "Pretty Print Error: Expected Object or String, got type \"" + (typeof str) + "\"", {"str": str});
+        }
+        str = "";
+
+        if (ast.id) {
+            cs = (cs?cs + " ":"") + "#" + ast.id;
+            rules = this.get_pretty_print_rules(cs);
+        } else {
+            rules = this.get_pretty_print_rules();
+        }
+        indent += rules.indent||"";
+        for (var i=0;i<ast.nodes.length;i++) {
+            var a = ast.nodes[i];
+            if (ast.type != "symbols") {
+                str += this.pretty_print(a, html, indent, cs);
+            } else {
+                var r = this.get_pretty_print_rules(cs + " ." + a.id);
+                str += r.prettify(a.text, indent + (r.indent||""), html, null, null, a.id);
+            }
+        }
+        return rules.prettify(str, indent, html, ast.type, ast.id, null);
     }
 
     return gp;

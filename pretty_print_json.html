@@ -38,147 +38,58 @@ h2 {
     padding: 5px;
 }
 
-.error {
+.symbol-error {
     background: red;
     color: black;
 }
 
-.string {
+.symbol-string {
     color: blue;
 }
 
-.key {
+.symbol-key {
     color: green;
 }
 
-.bool {
+.symbol-bool {
     color: purple;
 }
 
-.number {
+.symbol-number {
     color: red;
 }
 
-.null {
+.symbol-null {
     color: gold;
 }
 
         </style>
+        <script type="text/javascript" src="js/parser.js"></script>
+        <script type="text/javascript" src="js/json_definition.js"></script>
         <script type="text/javascript">
-function pretty_print_json(str, include_colors) {
-    var ret = "";
-    var symbols = lexer(str);
-   return parser(symbols, true);
-    // ret += str;
-    // return ret;
+function pretty_print_json(str) {
+    var html = json_parser.pretty_print(str, true);
+    return html;
 }
 
-function lexer(str) {
-    var stable = [
-        {"name": "string",        "exp": /^'(([^\']((\.)?))*)'/},
-        {"name": "string",        "exp": /^"(([^\"]((\.)?))*)"/},
-        {"name":  "left brace",   "exp": /^{/},
-        {"name": "right brace",   "exp": /^}/},
-        {"name":  "left bracket", "exp": /^\[/},
-        {"name": "right bracket", "exp": /^]/},
-        {"name": "key",           "exp": /^[\$_a-zA-Z]([$_a-zA-Z0-9]*)/},
-        {"name": "number",        "exp": /^(-?)(\d+)((\.\d+)?)/},
-        {"name": "bool",          "exp": /^([Tt]rue|[Ff]alse)/},
-        {"name": "null",          "exp": /^null/},
-        {"name": "whitespace",    "exp": /^\s+/},
-        {"name": "camma",         "exp": /^,/},
-        {"name": "colon",         "exp": /^:/},
-        {"name": "error",         "exp": /^./},
-    ];
-
-    var symbols = [];
-    while(str.length > 0) {
-        for (var i=0;i<stable.length;i++) {
-            var match = str.match(stable[i].exp);
-            if (match) {
-                symbols.push({
-                    "name": stable[i].name,
-                    "length": match[0].length,
-                    "text": match[0],
-                });
-                str = str.substr(match[0].length);
-                i=stable.length;
-            }
-        }
-    }
-    return symbols;
+function resize(input) {
+    var rows = (input.value.match(/\n/g)||[]).length+1;
+    input.rows = rows;
 }
 
-function parser(symbols, html) {
-    var tab = "  ";
-    var indent = "";
-    var lines = [];
-    var line = [];
-
-    for (var i=0;i<symbols.length;i++) {
-        switch (symbols[i].name) {
-            case "left brace":
-            case "left bracket":
-                line.push(symbols[i]);
-                lines.push(line);
-                indent += tab;
-                line = [{"name":"whitespace", "length": indent.length, "text": indent}];
-                break;
-
-            case "key":
-            case "string":
-            case "number":
-            case "bool":
-            case "null":
-            case "colon":
-                line.push(symbols[i]);
-                break;
-
-            case "camma":
-                line.push(symbols[i]);
-                lines.push(line);
-                line = [{"name":"whitespace", "length": indent.length, "text": indent}];
-                break;
-
-            case "right bracket":
-            case "right brace":
-                if (line[line.length-1].name == "whitespace") {
-                    var ws = line[line.length-1];
-                    indent = indent.substr(tab.length);
-                    ws.length -= tab.length;
-                    ws.text = indent;
-                } else {
-                    lines.push(line);
-                    indent = indent.substr(tab.length);
-                    line = [{"name":"whitespace", "length": indent.length, "text": indent}];
-                }
-                line.push(symbols[i]);
-                break;
-
-            case "whitespace":
-                break;
-        }
-    }
-    lines.push(line);
-
-    //return JSON.stringify(lines);
-    if (html) {
-        return lines.map(function (line) {
-            return line.map(function (val) {
-                return '<span class="' + val.name + '">' + val.text + "</span>";
-            }).join("");
-        }).join("\n");
-    } else {
-        return lines.map(function (line) {
-            return line.map(function (val) {
-                return val.text;
-            }).join("");
-        }).join("\n");
-    }
-}
 window.addEventListener("load", function () {
+    var input = document.getElementById("input");
+    resize(input);
     document.addEventListener("input", function () {
-        document.getElementById("output").innerHTML = pretty_print_json(document.getElementById("input").value);
+        resize(input);
+        try {
+            document.getElementById("output").innerHTML = pretty_print_json(input.value);
+            input.parentNode.style.border = "1px inset gray";
+            input.parentNode.style.boxShadow = "0px 0px 0px transparent";
+        } catch (e) {
+            input.parentNode.style.border = "1px inset red";
+            input.parentNode.style.boxShadow = "0px 0px 3px red";
+        }
     }, false);
     document.getElementById("output").innerHTML = pretty_print_json(document.getElementById("input").value);
 }, false);
@@ -188,7 +99,7 @@ window.addEventListener("load", function () {
         <h2>Pretty Print JSON</h2>
         <div class="container">
             <div class="input">
-                <textarea id="input">[{test:"test"}]</textarea>
+                <textarea id="input">[{"test":"test"}]</textarea>
             </div>
         </div>
         <div class="container">
